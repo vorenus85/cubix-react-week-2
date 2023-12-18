@@ -2,14 +2,13 @@
     width: 96px;
     height: 144px;
 }
-/*
+
 .card .back {
     background-image: url('../../assets/cards/card-back1.png');
     background-repeat: no-repeat;
     background-position: center;
     height: 100%;
 }
-*/
 
 .card .front {
     background-repeat: no-repeat;
