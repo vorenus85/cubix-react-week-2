@@ -31,14 +31,14 @@ function Cards() {
   const [tries, setTries] = useState(0);
 
   const clickOnCard = (index) => {
+    // not count tries on active card
+    if (cardIsActive(index)) {
+      return;
+    }
     if (tries < 2) {
       shownCards.push(index);
       setShownCards(shownCards);
       setTries(tries + 1);
-      console.log(shownCards);
-    } else {
-      // setTries(0);
-      // setShownCards([]);
     }
   };
 
@@ -49,14 +49,20 @@ function Cards() {
 
   useEffect(() => {
     // componentDidMount
-    const checkShownCards = () => {
-      const first = shuffledDeck[shownCards[0]];
-      const second = shuffledDeck[shownCards[1]];
-      console.log(first, second);
+    const checkActualCards = () => {
+      const shownCardLength = shownCards.length;
+      const first = shuffledDeck[shownCards[shownCardLength - 2]];
+      const second = shuffledDeck[shownCards[shownCardLength - 1]];
+      if (first !== second) {
+        shownCards.pop();
+        shownCards.pop();
+        setShownCards(shownCards);
+      }
+      setTries(0);
     };
 
     if (tries === 2) {
-      checkShownCards();
+      setTimeout(checkActualCards, 1000);
     }
     // componentWillUnMount
     return () => {};
