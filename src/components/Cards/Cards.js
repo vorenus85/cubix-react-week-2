@@ -36,27 +36,24 @@ function Cards() {
       return;
     }
     if (tries < 2) {
-      shownCards.push(index);
-      setShownCards(shownCards);
-      setTries(tries + 1);
+      setShownCards((previousValue) => {
+        return [...previousValue, index];
+      });
+      setTries((previousValue) => previousValue + 1);
     }
   };
 
-  const cardIsActive = (index) => {
-    const result = shownCards.includes(index);
-    return result;
-  };
+  const cardIsActive = (index) => shownCards.includes(index);
 
   useEffect(() => {
     // componentDidMount
     const checkActualCards = () => {
-      const shownCardLength = shownCards.length;
-      const first = shuffledDeck[shownCards[shownCardLength - 2]];
-      const second = shuffledDeck[shownCards[shownCardLength - 1]];
-      if (first !== second) {
-        shownCards.pop();
-        shownCards.pop();
-        setShownCards(shownCards);
+      const firstChoice = shuffledDeck[shownCards.slice(-2)[0]]; // second last element from array
+      const secondChoice = shuffledDeck[shownCards.slice(-1)[0]]; // last element from array
+      if (firstChoice !== secondChoice) {
+        setShownCards((previousValue) => {
+          return previousValue.slice(0, -2);
+        });
       }
       setTries(0);
     };
@@ -66,7 +63,7 @@ function Cards() {
     }
     // componentWillUnMount
     return () => {};
-  }, [tries, shownCards]);
+  }, [tries, shownCards, setShownCards]);
 
   return (
     <div className="container">
