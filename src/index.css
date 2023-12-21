@@ -16,3 +16,29 @@ ul {
   margin: 0;
   padding: 0;
 }
+
+.app {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  text-align: center;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.container {
+  width: 100%;
+  max-width: 1400px;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.btn {
+  margin: 2rem;
+}
+
+

@@ -24,11 +24,20 @@ const shuffle = (array) => {
   return array;
 };
 
-const shuffledDeck = shuffle(deck);
-
 function Cards() {
+  const [shuffledDeck, setShuffledDeck] = useState(() => shuffle(deck));
   const [shownCards, setShownCards] = useState([]);
   const [tries, setTries] = useState(0);
+  const [allTries, setAllTries] = useState(0);
+  const [gamesEnd, setGamesEnd] = useState(false);
+
+  const startNewGame = () => {
+    setShownCards([]);
+    setTries(0);
+    setAllTries(0);
+    setShuffledDeck(shuffle(deck));
+    setGamesEnd(false);
+  };
 
   const clickOnCard = (index) => {
     // not count tries on active card
@@ -41,9 +50,16 @@ function Cards() {
       });
       setTries((previousValue) => previousValue + 1);
     }
+    setAllTries((e) => e + 1);
   };
 
   const cardIsActive = (index) => shownCards.includes(index);
+
+  useEffect(() => {
+    if (shownCards.length === 8) {
+      setGamesEnd(true);
+    }
+  }, [shownCards, setGamesEnd]);
 
   useEffect(() => {
     // componentDidMount
@@ -63,21 +79,36 @@ function Cards() {
     }
     // componentWillUnMount
     return () => {};
-  }, [tries, shownCards, setShownCards]);
+  }, [tries, shownCards, setShownCards, shuffledDeck]);
 
   return (
-    <div className="container">
-      <div className="card-deck">
-        {shuffledDeck.map((card, index) => {
-          return (
-            <Card
-              card={card}
-              key={index}
-              isActive={cardIsActive(index)}
-              clickOnCard={() => clickOnCard(index)}
-            />
-          );
-        })}
+    <div>
+      {gamesEnd ? (
+        <div className="container">
+          <h1>You won the game :) </h1>
+          <h4>Your total tries: {allTries}</h4>
+        </div>
+      ) : (
+        <div></div>
+      )}
+      <div className="container">
+        <div className="card-deck">
+          {shuffledDeck.map((card, index) => {
+            return (
+              <Card
+                card={card}
+                key={index}
+                isActive={cardIsActive(index)}
+                clickOnCard={() => clickOnCard(index)}
+              />
+            );
+          })}
+        </div>
+      </div>
+      <div className="container">
+        <button className="btn" onClick={() => startNewGame()}>
+          Start new game
+        </button>
       </div>
     </div>
   );

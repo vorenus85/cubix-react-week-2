@@ -2,7 +2,7 @@ import Cards from './components/Cards/Cards.js';
 
 function App() {
   return (
-    <div className="App">
+    <div className="app">
       <Cards />
     </div>
   );
